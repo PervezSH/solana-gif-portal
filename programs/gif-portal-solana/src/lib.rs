@@ -23,6 +23,14 @@ pub mod gif_portal_solana {
         base_account.total_gifs = 0;
         Ok(())
     }
+
+    // Function to update gif counter
+    pub fn add_gif(ctx: Context<AddGif>) -> ProgramResult {
+        // Get refernce to the account
+        let base_account = &mut ctx.accounts.base_account;
+        base_account.total_gifs += 1;
+        Ok(())
+    }
 }
 
 // Attach certain variables to the StartStuffOff context.
@@ -45,6 +53,14 @@ pub struct StartStuffOff<'info> {
         It is responsible for a lot of stuff, but one of the main things it does is create accounts on Solana
     */
     pub system_program: Program <'info, System>,
+}
+
+// Specify what data you want in the AddGif Context.
+// Getting a handle on the flow of things :)?
+#[derive(Accounts)]
+pub struct AddGif<'info> {
+    #[account(mut)]
+    pub base_account: Account<'info, BaseAccount>,
 }
 
 // Tell Solana what we want to store on this account.
