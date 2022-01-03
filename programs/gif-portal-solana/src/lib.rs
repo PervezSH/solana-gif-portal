@@ -24,10 +24,20 @@ pub mod gif_portal_solana {
         Ok(())
     }
 
-    // Function to update gif counter
-    pub fn add_gif(ctx: Context<AddGif>) -> ProgramResult {
-        // Get refernce to the account
+    // The function now accepts a gif_link param from the user
+    pub fn add_gif(ctx: Context<AddGif>, gif_link: String) -> ProgramResult {
+        // Get refernce to the account, also user
         let base_account = &mut ctx.accounts.base_account;
+        let user = &mut ctx.accounts.user;
+
+        // Build the struct.
+        let item = ItemStruct {
+            gif_link: gif_link.to_string(),
+            user_address: *user.to_account_info().key,
+        };
+
+        // Add it to the gif_list vector.
+        base_account.gif_list.push(item);
         base_account.total_gifs += 1;
         Ok(())
     }
@@ -61,6 +71,15 @@ pub struct StartStuffOff<'info> {
 pub struct AddGif<'info> {
     #[account(mut)]
     pub base_account: Account<'info, BaseAccount>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+}
+
+// Create a custom struct for us to work with.
+#[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)] //Tells anchor how to serialize/deserialize the struct
+pub struct ItemStruct {
+    pub gif_link: String,
+    pub user_address: Pubkey,
 }
 
 // Tell Solana what we want to store on this account.
@@ -68,4 +87,6 @@ pub struct AddGif<'info> {
 pub struct BaseAccount {
     // BaseAccount holds one thing and it's an integer named total_gifs
     pub total_gifs: u64,
+    // Attach a Vector of type ItemStruct to the account
+    pub gif_list: Vec<ItemStruct>,
 }
