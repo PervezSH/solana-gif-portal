@@ -4,7 +4,7 @@ use anchor_lang::prelude::*;
 
 // This is the Program Id
 // has info for Solana on how to run our program
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("x5znzH6GXVH77X3kGTaRor2DZXnHaVNxShXVF1wmaBN");
 
 // This is how we tell our program, everything in this little module below is our program
 // this lets us actually call our Solana program from our frontend via a fetch request

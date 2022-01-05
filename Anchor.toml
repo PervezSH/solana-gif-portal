@@ -1,11 +1,11 @@
-[programs.localnet]
-gif_portal_solana = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+gif_portal_solana = "x5znzH6GXVH77X3kGTaRor2DZXnHaVNxShXVF1wmaBN"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/root/.config/solana/id.json"
 
 [scripts]
