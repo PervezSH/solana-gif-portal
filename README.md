@@ -11,5 +11,3 @@ And then submit your favourite Rick and Morty Gif 🤠
 
 **Web App Repo:**
 https://github.com/PervezSH/gif-portal-web-app
-
-buildspace Guided Project
