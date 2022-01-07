@@ -8,8 +8,3 @@ https://pervezsh.github.io/gif-portal-web-app/
 On connect to wallet, it's gonna pop up phantom, world's most popular solana wallet.
 
 And then submit your favourite Rick and Morty Gif 🤠
-
-**Web App Repo:**
-https://github.com/PervezSH/gif-portal-web-app
-
-buildspace Guided Project
