@@ -49,10 +49,15 @@ pub mod gif_portal_solana {
         let base_account = &mut ctx.accounts.base_account;
         let user = &mut ctx.accounts.user;
         
-        let index: usize = gif_index.parse().unwrap();
-        let gif_item = &mut base_account.gif_list[index];
+        // Upvote if user hasn't voted
+        if !base_account.voters.contains(&*user.to_account_info().key) {
+            let index: usize = gif_index.parse().unwrap();
+            let gif_item = &mut base_account.gif_list[index];
+            gif_item.gif_votes += 1;
 
-        gif_item.gif_votes += 1;
+            // Add user to voters vec
+            base_account.voters.push(*user.to_account_info().key);
+        }
         Ok(())
     }
 }
@@ -103,4 +108,5 @@ pub struct BaseAccount {
     pub total_gifs: u64,
     // Attach a Vector of type ItemStruct to the account
     pub gif_list: Vec<ItemStruct>,
+    pub voters: Vec<Pubkey>
 }
