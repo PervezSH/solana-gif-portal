@@ -25,7 +25,7 @@ pub mod gif_portal_solana {
     }
 
     // The function now accepts a gif_link param from the user
-    pub fn add_gif(ctx: Context<AddGif>, gif_link: String) -> ProgramResult {
+    pub fn add_gif(ctx: Context<BaseUser>, gif_link: String) -> ProgramResult {
         // Get refernce to the account, also user
         let base_account = &mut ctx.accounts.base_account;
         let user = &mut ctx.accounts.user;
@@ -34,11 +34,25 @@ pub mod gif_portal_solana {
         let item = ItemStruct {
             gif_link: gif_link.to_string(),
             user_address: *user.to_account_info().key,
+            gif_votes: 0
         };
 
         // Add it to the gif_list vector.
         base_account.gif_list.push(item);
         base_account.total_gifs += 1;
+        Ok(())
+    }
+
+    // Give user the ability to upvote a their fav gif
+    pub fn upvote_gif(ctx: Context<BaseUser>, gif_index: String) -> ProgramResult {
+        // Get refernce to the account, also user
+        let base_account = &mut ctx.accounts.base_account;
+        let user = &mut ctx.accounts.user;
+        
+        let index: usize = gif_index.parse().unwrap();
+        let gif_item = &mut base_account.gif_list[index];
+
+        gif_item.gif_votes += 1;
         Ok(())
     }
 }
@@ -65,10 +79,9 @@ pub struct StartStuffOff<'info> {
     pub system_program: Program <'info, System>,
 }
 
-// Specify what data you want in the AddGif Context.
-// Getting a handle on the flow of things :)?
+// Specify base_account and user in BaseUser Conetext
 #[derive(Accounts)]
-pub struct AddGif<'info> {
+pub struct BaseUser<'info> {
     #[account(mut)]
     pub base_account: Account<'info, BaseAccount>,
     #[account(mut)]
@@ -80,6 +93,7 @@ pub struct AddGif<'info> {
 pub struct ItemStruct {
     pub gif_link: String,
     pub user_address: Pubkey,
+    pub gif_votes: u16
 }
 
 // Tell Solana what we want to store on this account.

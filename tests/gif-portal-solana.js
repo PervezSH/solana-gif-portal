@@ -39,6 +39,14 @@ const main = async() => {
     },
   });
   
+  // Upvote gif at index 0
+  await program.rpc.upvoteGif("0",{
+    accounts: {
+      baseAccount: baseAccount.publicKey,
+      user: provider.wallet.publicKey,
+    },
+  });
+
   // Call the account.
   account = await program.account.baseAccount.fetch(baseAccount.publicKey);
   console.log('👀 GIF Count', account.totalGifs.toString())
